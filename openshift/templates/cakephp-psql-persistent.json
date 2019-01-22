@@ -10,12 +10,12 @@
       "iconClass": "icon-php",
       "openshift.io/long-description": "This template defines resources needed to develop a CakePHP application, including a build configuration, application deployment configuration, and database deployment configuration.",
       "openshift.io/provider-display-name": "Red Hat, Inc.",
-      "openshift.io/documentation-url": "https://github.com/jurg3nmeister/cake2php56",
+      "openshift.io/documentation-url": "https://github.com/jurg3nmeister/cake2php56-biteranerp",
       "openshift.io/support-url": "https://access.redhat.com",
       "template.openshift.io/bindable": "false"
     }
   },
-  "message": "The following service(s) have been created in your project: ${NAME}, ${DATABASE_SERVICE_NAME}.\n\nFor more information about using this template, including OpenShift considerations, see https://github.com/jurg3nmeister/cake2php56/blob/master/README.md.",
+  "message": "The following service(s) have been created in your project: ${NAME}, ${DATABASE_SERVICE_NAME}.\n\nFor more information about using this template, including OpenShift considerations, see https://github.com/jurg3nmeister/cake2php56-biteranerp/blob/master/README.md.",
   "labels": {
       "template": "cakephp-psql-persistent",
       "app": "cakephp-psql-persistent"
@@ -475,7 +475,7 @@
       "displayName": "Git Repository URL",
       "description": "The URL of the repository with your application source code.",
       "required": true,
-      "value": "https://github.com/jurg3nmeister/cake2php56.git"
+      "value": "https://github.com/jurg3nmeister/cake2php56-biteranerp.git"
     },
     {
       "name": "SOURCE_REPOSITORY_REF",
