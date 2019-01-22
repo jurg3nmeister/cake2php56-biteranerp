@@ -1,4 +1,6 @@
+<?php /* (c)Bittion Admin Module | Created: 30/08/2014 | Developer:reyro */ ?>
 <?php
+
 /**
  * Application level Controller
  *
@@ -18,7 +20,6 @@
  * @since         CakePHP(tm) v 0.2.9
  * @license       http://www.opensource.org/licenses/mit-license.php MIT License
  */
-
 App::uses('Controller', 'Controller');
 
 /**
@@ -31,8 +32,58 @@ App::uses('Controller', 'Controller');
  * @link		http://book.cakephp.org/2.0/en/controllers.html#the-app-controller
  */
 class AppController extends Controller {
-	/**
-	 * Add in the DebugKit toolbar
-	 */
-	public $components = array('DebugKit.Toolbar');
+
+    public $components = array(
+        'DebugKit.Toolbar',
+        'RequestHandler',
+        'Session',
+        'BittionMain',
+        'BittionSecurity',
+        'CurrentApp',
+        'Auth' => array(
+            'authenticate' => array('Form' => array('userModel' => 'AdmUser'))
+            , 'loginRedirect' => array('controller' => 'adm_users', 'action' => 'home')
+            , 'logoutRedirect' => array('controller' => 'adm_users', 'action' => 'login')//this is used for login and logout
+            , 'loginAction' => array('controller' => 'adm_users', 'action' => 'login')
+            , 'authError' => ''//it's empty because a flash auth message is used and also to avoid showing anything when trying to reach a page from login view without being logged in
+            , 'authorize' => array('Controller') // Enables isAuthorized function otherwise won't work
+        )
+    );
+    public $helpers = array(
+        'Session',
+        'Js',
+        'SmartForm',
+        'QRCode'
+//        'Html' => array('className' => 'BoostCake.BoostCakeHtml'),
+        ,'Form' => array('className' => 'BoostCake.BoostCakeForm'),
+//        'Paginator' => array('className' => 'BoostCake.BoostCakePaginator'),
+    );
+
+    public function isAuthorized($user) {
+        return true; //everything will be authorized
+//        $authorized = $this->BittionSecurity->fnAllowActionPermission($this->name, $this->action, $this->Session->read('Auth.User.AdmRole.id'));
+//        if ($authorized) {
+//            return true;
+//        }
+//        //return false // will return to the same page, not needed on this case (cause when deactive live on current page
+//        $this->Session->setFlash('ACCESO DENEGADO!', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-danger'), 'auth');
+//        $this->redirect(array('controller' => 'adm_users', 'action' => 'home'));
+    }
+
+    public function beforeFilter() {
+        if ($this->Session->read('Auth.User.id')) {// to avoid this message on login view when trying to reach a page without being logged in
+            if ($this->name == 'AdmUsers' && $this->action == 'login' OR $this->action == 'logout') {
+                $userActive = true;
+            } else {
+                $userActive = $this->BittionSecurity->fnCheckActiveUser($this->Session->read('Auth.User.id'));
+            }
+            if (!$userActive) {
+                session_destroy(); //cake session destroy don't work well
+                $this->Session->setFlash('Usuario desactivado!', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-danger'));
+                $this->redirect(array('controller' => 'adm_users', 'action' => 'login'));
+            }
+        }
+    }
+
+//END CLASS
 }

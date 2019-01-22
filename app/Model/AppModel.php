@@ -1,4 +1,6 @@
+<?php /* (c)Bittion Admin Module | Created: 30/08/2014 | Developer:reyro */ ?>
 <?php
+
 /**
  * Application model for CakePHP.
  *
@@ -18,7 +20,6 @@
  * @since         CakePHP(tm) v 0.2.9
  * @license       http://www.opensource.org/licenses/mit-license.php MIT License
  */
-
 App::uses('Model', 'Model');
 
 /**
@@ -30,4 +31,45 @@ App::uses('Model', 'Model');
  * @package       app.Model
  */
 class AppModel extends Model {
+
+    public function beforeSave($options = array()) { //DO NOT USE updateALL(), triggers won't work
+        App::import('Model', 'CakeSession');
+        $session = new CakeSession();
+        $userId = $session->read('Auth.User.id');
+
+        if ($userId == '') {
+            return false;
+        }
+//        The trigger will figure it out wich one to put in which
+//        $this->data[$this->name]['creator'] = $userId;
+//        $this->data[$this->name]['modifier'] = $userId;
+        
+        
+        if(isset($this->data[$this->name]['id']) && $this->data[$this->name]['id'] != ''){//for triggers update
+            $this->data[$this->name]['modifier'] = $userId;
+        }else{
+            $this->data[$this->name]['creator'] = $userId;
+        }
+        
+        return true;
+    }
+
+    public function beforeDelete($cascade = false) { //DO NOT USE deleteALL(), triggers won't work
+
+        App::import('Model', 'CakeSession');
+        $session = new CakeSession();
+        $userId = $session->read('Auth.User.id');
+
+        if ($userId == '') {
+            return false;
+        }
+        try {
+            $this->save(array('id' => $this->id, 'modifier' => $userId));
+            return true;
+        } catch (Exception $exc) {
+//			echo $exc->getTraceAsString();
+            return false;
+        }
+    }
+
 }

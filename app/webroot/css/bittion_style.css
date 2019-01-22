@@ -1,0 +1,41 @@
+/*
+ * It is advised not to edit the smartadmin_production.css
+ * as this will override any changes you make in the 
+ * later versions of this theme. 
+ * 
+ * We advise that you use use this CSS to override 
+ * SmartAdmin styles. 
+ * 
+ * Rename the stylesheet to whatever your liking so it will stay
+ * unique to you with each update of SmartAdmin.
+ */
+
+/*
+ * INDEX
+ * 
+ * - HTML
+ * - BODY
+ * - CUSTOM STYLES
+ */
+
+
+/*For printing views with Layout print.ctp*/
+@media print {
+/*    #invoiceHeader {
+        background-color: #3A3633 !important;
+        width: 100%;
+        -webkit-print-color-adjust: exact; 
+        transition: none !important;
+        -webkit-transition: none !important;
+        -moz-transition: none !important;
+    }
+    #invoiceLogo{
+        background-color: #0000ff !important;
+    }*/
+    #debug-kit-toolbar{
+        display: none !important;
+    }
+    #printArea{
+        width: 100%;
+    }
+}

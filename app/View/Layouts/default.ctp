@@ -1,63 +1,70 @@
-<?php
-/**
- * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
- * Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
- *
- * Licensed under The MIT License
- * For full copyright and license information, please see the LICENSE.txt
- * Redistributions of files must retain the above copyright notice.
- *
- * @copyright     Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
- * @link          http://cakephp.org CakePHP(tm) Project
- * @package       app.View.Layouts
- * @since         CakePHP(tm) v 0.10.0.1076
- * @license       http://www.opensource.org/licenses/mit-license.php MIT License
- */
-
-$cakeDescription = __d('cake_dev', 'CakePHP: the rapid development php framework');
-$cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
-?>
+<?php /* (c)Bittion Admin Module | Created: 30/07/2014 | Developer:reyro */ ?>
+<?php $cakeDescription = __d('biteran', 'ERP Biteran '); ?>
 <!DOCTYPE html>
-<html>
-<head>
-	<?php echo $this->Html->charset(); ?>
-	<title>
-		<?php echo $cakeDescription ?>:
-		<?php echo $this->fetch('title'); ?>
-	</title>
-	<?php
-		echo $this->Html->meta('icon');
+<html lang="es">
+    <head>
+        <?php echo $this->Html->charset(); ?>
+        <title>
+            <?php
+            echo $cakeDescription;
+            echo $title_for_layout;
+            ?>
+        </title>
+        <!--<meta charset="utf-8">-->
+        <meta name="description" content="">
+        <meta name="author" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+        <?php
+        //IE=edge => render tells Internet Explorer to use the highest mode available to that version of IE. Could be IE=9; IE=8; IE=7. Forces the browser to render as that particular version's standards
+        //chrome=1 => Its for Google's Chrome Frame browser add-on.ChromeFrame can be installed on various versions of IE. Activates chrome frames if it exists.
+        ?>
+        <!--<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">-->
 
-		echo $this->Html->css('cake.generic');
+        <!-- START STYLE: css, icons and images -->
+        <?php echo $this->element('SmartAdminStyle'); ?>
+        <!-- END STYLE: css, icons and images  -->
+    </head>       
 
-		echo $this->fetch('meta');
-		echo $this->fetch('css');
-		echo $this->fetch('script');
-	?>
-</head>
-<body>
-	<div id="container">
-		<div id="header">
-			<h1><?php echo $this->Html->link($cakeDescription, 'http://cakephp.org'); ?></h1>
-		</div>
-		<div id="content">
+    <body class="smart-style-2">
+        <!-- possible classes: minified, fixed-ribbon, fixed-header, fixed-width-->
 
-			<?php echo $this->Flash->render(); ?>
+        <!-- START HEADER -->
+        <?php echo $this->element('SmartAdminHeader'); ?>
+        <!-- END HEADER -->
 
-			<?php echo $this->fetch('content'); ?>
-		</div>
-		<div id="footer">
-			<?php echo $this->Html->link(
-					$this->Html->image('cake.power.gif', array('alt' => $cakeDescription, 'border' => '0')),
-					'http://www.cakephp.org/',
-					array('target' => '_blank', 'escape' => false, 'id' => 'cake-powered')
-				);
-			?>
-			<p>
-				<?php echo $cakeVersion; ?>
-			</p>
-		</div>
-	</div>
-	<?php echo $this->element('sql_dump'); ?>
-</body>
+        <!-- START LEFT PANEL : Navigation area -->
+        <?php echo $this->element('SmartAdminLeftPanel'); ?>
+        <!-- END LEFT PANEL: Navigation area -->
+
+        <!-- MAIN PANEL -->
+        <div id="main" role="main">
+
+            <!-- START RIBBON -->
+            <?php echo $this->element('SmartAdminRibbon'); ?>
+            <!-- END RIBBON -->
+
+            <!-- START CONTENT -->
+            <div id="content">               
+                <?php 
+                echo $this->Session->flash('auth'); //Authentication for login or isAuthorized
+                echo $this->Session->flash();//default
+                ?>
+                <?php echo '<div style="display:none;">' . $this->Session->flash('flashGrowl') . '</div>'; // emulates ajax growl message when post a form, must add flashGrowlMessage.js on the view?>
+                <?php echo $this->fetch('content'); ?>
+                <?php echo $this->element('sql_dump'); ?>
+            </div>
+            <!-- END CONTENT -->
+
+        </div>
+        <!-- END MAIN PANEL -->
+
+        <!-- START PAGE FOOTER -->
+        <?php echo $this->element('SmartAdminFooter'); ?>
+        <!-- END PAGE FOOTER -->
+
+        <!-- START JAVASCRIPT -->
+        <?php echo $this->element('SmartAdminJavascript'); ?>        
+        <!-- END JAVASCRIPT -->
+    </body>
+
 </html>
